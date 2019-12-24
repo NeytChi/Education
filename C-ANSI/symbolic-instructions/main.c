@@ -22,7 +22,7 @@ int strend(char *s, char *t)
 {
     int e;
 
-    e = 10;
+    e = 0;
     while(*s != '\0')
     {
         if (e == 1) {
