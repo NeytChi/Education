@@ -2,6 +2,7 @@
     "files.associations": {
         "assert.h": "c",
         "string.h": "c",
-        "list": "c"
+        "list": "c",
+        "cstring": "c"
     }
 }

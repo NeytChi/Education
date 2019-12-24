@@ -99,6 +99,133 @@ void test_strncpy()
     strncpy(sa, ta, 3);
     printf("%s\n", sa);
 } 
+void reverse(char *s)
+{
+    int c, i, j;
+
+    j = 0;
+    while (s[j++] != '\0')
+        ;
+    for (i = 0, j = j - 2; i < j; i++, j--)
+    {
+        c = s[i];
+        s[i] = s[j];
+        s[j] = c;
+    }
+}
+void test_reverse()
+{
+    char s[] = "Hello, world!";
+    printf("test_reverse:\n");
+    printf("input: \t%s\n", s);
+    reverse(s);
+    printf("result: \t%s\n", s);
+}
+void itoa(long n, char *s)
+{
+    long i, sign;
+
+    if ((sign = n) < 0)
+        n = -n;
+    i = 0;
+    do 
+        s[i++] = n % 10 + '0';
+    while ((n /= 10) > 0);
+    if (sign < 0)
+        s[i++] = '-';
+    s[i] = '\0';
+    reverse(s);
+}
+void test_itoa()
+{
+    char s[7];
+    long n = -123456;
+    printf("\ntest_itoa:\n");
+    printf("input: \t%ld\n", n);
+    itoa(n, s);
+    printf("result: %s\n", s);
+}
+int isspace(char a)
+{
+    return a == ' ' ? 1 : 0;
+}
+int isdigit(char a)
+{
+    return a >= '0' && a <= '9' ? 1 : 0;
+}
+double atof(char *s)
+{
+    double val, power;
+    int i, sign;
+
+    for (i = 0; isspace(s[i]); i++)
+        ;
+    sign = (s[i] == '-') ? -1 : 1;
+    if (s[i] == '+' || s[i] == '-')
+        i++;
+    for (val = 0.0; isdigit(s[i]); i++)
+        val = 10.0 * val + (s[i] - '0');
+    if (s[i] == '.')
+        i++;
+    for (power = 1.0; isdigit(s[i]); i++) {
+        val = 10.0 * val + (s[i] - '0');
+        power *= 10;
+    }
+    return sign * val / power;
+}
+void test_atof()
+{
+    double r;
+    char s[25] = "-1323.1234";
+
+    printf("test_atof:\n");
+    r = atof(s);
+    printf("result: %f\n", r);
+}
+int getline(char *s, int lim)
+{
+    int c, i;
+    
+    i = 0;
+    while(--lim > 0 && ((c = getchar()) != EOF && c != '\n'))
+        s[i++] = c;
+    if (c == '\n')
+        s[i++] = c;
+    s[i] ='\0';
+    return i + 1;
+}
+void test_getline()
+{
+    int c, lim;
+    lim = 20;
+    char s[lim];
+
+    printf("test_getline:\n");
+    c = getline(s, lim);
+    printf("line size: %d\n", c);
+}
+int strindex(char *s, char *t)
+{
+    int i, j, k;
+
+    for (i = 0; s[i] != '\0'; i++) {
+        for (j = i, k = 0; t[k] != '\0' && s[j] == t[k]; j++, k++)
+            ;
+        if (k > 0 && t[k] == '\0')
+            return i;
+    }
+    return -1;
+}
+void test_strindex()
+{
+    char s[] = "Hello, world!";
+    char t[] = "world!";
+    printf("\test_strindex:\n");
+    printf("input: %s\n", s);
+    printf("input: %s\n", t);
+    int a = strindex(s, t);
+    printf("result: %d\n", a);
+}
 int main()
 {
     test_strcat();
@@ -106,5 +233,10 @@ int main()
     test_strncat();
     test_strncpy();
     test_strncmp();
+    test_reverse();
+    test_itoa();
+    test_atof();
+    test_getline();
+    test_strindex();
     return 0;
 }
