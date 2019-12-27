@@ -4,7 +4,7 @@
 
 #define SIZE 10
  
-void detab(int count)
+void detab(int count, int m)
 {
     int i, j;
     char c;
@@ -20,7 +20,7 @@ void detab(int count)
     printf("input: \t%s\n", s);
 
     
-    for (j = 0; j < i; j++)
+    for (j = m; j < i; j++)
     {
         if (s[j] == '\t')
         {
@@ -60,15 +60,16 @@ void helps()
 }
 int main(int argc, char *argv[])
 {
-    int i, count;
+    int i, count, m;
+    char c;
 
-    i = 1; count = 4;
+    i = 1; count = 4; m = 0;
     if (argc < 2)
         helps();
     
     if (argc > i)
     {
-        while(--argc > 0 && (*++argv)[0] == '-') {
+        while(--argc > 0 && ((c = (*++argv)[0]) == '-' || c == '+')) {
             switch ((*argv)[1])
             {
                 case 'c':
@@ -83,9 +84,25 @@ int main(int argc, char *argv[])
                 default:
                     break;
             };
+            switch (c)
+            {
+                case '+':
+                    count = atoi(*argv);
+                    if (count == 0)
+                        count = 4;
+                    break;
+                case '-':
+                    m = atoi(*argv);
+                    if (m == 0)
+                        m = 4;
+                    break;
+                
+                default:
+                    break;
+            }
         }
     }
-    detab(count - 1);
+    detab(count - 1, m);
     test_arr();
     return 0;
 }
